@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bavly Kids - المبيعات والفواتير</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>body { font-family: 'Cairo', sans-serif; }</style>
+</head>
+<body class="bg-gray-50 flex h-screen overflow-hidden">
+
+    <!-- Sidebar -->
+    <aside class="w-64 bg-slate-900 text-white flex flex-col">
+        <div class="p-5 text-2xl font-bold border-b border-slate-800 text-pink-400">👶 Bavly Kids</div>
+        <nav class="flex-1 p-4 space-y-2">
+            <a href="index.html" class="block py-2.5 px-4 rounded hover:bg-slate-800 text-slate-300">الرئيسية (Dashboard)</a>
+            <a href="suppliers.html" class="block py-2.5 px-4 rounded hover:bg-slate-800 text-slate-300">الموردين والمشتريات</a>
+            <a href="inventory.html" class="block py-2.5 px-4 rounded hover:bg-slate-800 text-slate-300">المخزن والتسعير</a>
+            <a href="sales.html" class="block py-2.5 px-4 rounded bg-pink-600 text-white font-semibold">المبيعات والفواتير</a>
+            <a href="customers.html" class="block py-2.5 px-4 rounded hover:bg-slate-800 text-slate-300">العملاء</a>
+        </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="flex-1 overflow-y-auto p-8">
+        <h1 class="text-3xl font-bold text-slate-800 mb-6">شاشة المبيعات والفواتير الدينايكية ❤️</h1>
+
+        <!-- Invoice Header -->
+        <div class="bg-white rounded-xl shadow-sm border border-slate-100 p-6 mb-6">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                <div>
+                    <label class="block text-sm text-slate-600 mb-1">رقم الفاتورة</label>
+                    <input type="text" value="INV-2026-1001" readonly class="w-full bg-slate-50 border rounded-lg p-2.5 text-sm font-mono">
+                </div>
+                <div>
+                    <label class="block text-sm text-slate-600 mb-1">التاريخ</label>
+                    <input type="date" class="w-full border rounded-lg p-2.5 text-sm">
+                </div>
+                <div>
+                    <label class="block text-sm text-slate-600 mb-1">اسم العميل</label>
+                    <input type="text" placeholder="ابحث أو اكتب اسم العميل..." class="w-full border rounded-lg p-2.5 text-sm">
+                </div>
+                <div>
+                    <label class="block text-sm text-slate-600 mb-1">رقم التليفون</label>
+                    <input type="text" placeholder="01xxxxxxxxx" class="w-full border rounded-lg p-2.5 text-sm">
+                </div>
+            </div>
+        </div>
+
+        <!-- Dynamic Sales Table (1000 Rows Ready) -->
+        <div class="bg-white rounded-xl shadow-sm border border-slate-100 overflow-hidden mb-6">
+            <table class="w-full text-right border-collapse" id="salesTable">
+                <thead>
+                    <tr class="bg-slate-100 text-slate-700 text-sm">
+                        <th class="p-3">كود المنتج</th>
+                        <th class="p-3">اسم المنتج</th>
+                        <th class="p-3">المقاس</th>
+                        <th class="p-3">الكمية</th>
+                        <th class="p-3">السعر الافتراضي</th>
+                        <th class="p-3">سعر البيع الفعلي</th>
+                        <th class="p-3">الخصم</th>
+                        <th class="p-3">الإجمالي</th>
+                    </tr>
+                </thead>
+                <tbody id="salesRows" class="text-sm">
+                    <tr class="border-b row-item">
+                        <td class="p-2"><input type="text" placeholder="الكود" class="w-full border rounded p-1.5 product-code" oninput="addRowIfNeeded(this)"></td>
+                        <td class="p-2"><input type="text" placeholder="اسم المنتج" class="w-full border rounded p-1.5"></td>
+                        <td class="p-2"><input type="text" placeholder="المقاس" class="w-full border rounded p-1.5"></td>
+                        <td class="p-2"><input type="number" value="1" class="w-full border rounded p-1.5"></td>
+                        <td class="p-2"><input type="number" value="250" class="w-full border rounded p-1.5 bg-slate-50"></td>
+                        <td class="p-2"><input type="number" value="220" class="w-full border rounded p-1.5 font-bold text-pink-600"></td>
+                        <td class="p-2"><input type="number" value="30" class="w-full border rounded p-1.5"></td>
+                        <td class="p-2 font-bold text-slate-800">220 ج.م</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Invoice Footer & Summary -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-100">
+                <h3 class="font-bold text-slate-800 mb-4">تبويب المرتجعات السريعة</h3>
+                <div class="space-y-3">
+                    <input type="text" placeholder="رقم الفاتورة الأصلية للمرتجع" class="w-full border rounded p-2 text-sm">
+                    <input type="text" placeholder="المنتج والكمية المرتجعة والسبب" class="w-full border rounded p-2 text-sm">
+                    <button class="bg-amber-600 text-white px-4 py-2 rounded text-sm font-semibold">تسجيل مرتجع</button>
+                </div>
+            </div>
+
+            <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-100 space-y-3">
+                <div class="flex justify-between text-sm"><span>إجمالي المنتجات:</span> <strong class="text-slate-800">1,250 ج.م</strong></div>
+                <div class="flex justify-between text-sm"><span>إجمالي الخصومات:</span> <strong class="text-rose-600">- 50 ج.م</strong></div>
+                <div class="flex justify-between text-base font-bold border-t pt-2"><span>الإجمالي النهائي:</span> <span class="text-pink-600">1,200 ج.م</span></div>
+                <div class="grid grid-cols-2 gap-4 pt-2">
+                    <input type="number" placeholder="المدفوع" class="border rounded p-2 text-sm">
+                    <input type="number" placeholder="المتبقي (مديونية)" class="border rounded p-2 text-sm bg-slate-50">
+                </div>
+                <button class="w-full bg-emerald-600 text-white font-bold py-3 rounded-lg hover:bg-emerald-700">حفظ وطباعة الفاتورة 🖨️</button>
+            </div>
+        </div>
+    </main>
+
+    <!-- Script for Dynamic Rows (1000 Rows support) -->
+    <script>
+        function addRowIfNeeded(input) {
+            const tbody = document.getElementById('salesRows');
+            const rows = tbody.getElementsByClassName('row-item');
+            const currentRow = input.closest('tr');
+            
+            // If this is the last row and user started typing, add a new row
+            if (currentRow === rows[rows.length - 1] && input.value.trim() !== '') {
+                if (rows.length < 1000) {
+                    const newRow = rows[0].cloneNode(true);
+                    // Clear inputs in the new row
+                    const inputs = newRow.getElementsByTagName('input');
+                    for (let i = 0; i < inputs.length; i++) {
+                        inputs[i].value = '';
+                    }
+                    tbody.appendChild(newRow);
+                }
+            }
+        }
+    </script>
+</body>
+</html>
